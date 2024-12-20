@@ -14,7 +14,7 @@ const contract = new ethers.Contract(contractAddress,contractDetails.abi , signe
 
 
 
-async function storeHashes(hashes) {
+module.exports.storeHashes = async (hashes) => {
     try {
 
       const results = await contract.callStatic.storeHash(hashes);
@@ -26,7 +26,6 @@ async function storeHashes(hashes) {
         Stored: result.stored
       }));
   
-      console.log("Hashes stored successfully:", formattedResults);
       return formattedResults;
     } catch (error) {
       console.error("Error storing hashes:", error);
@@ -34,5 +33,3 @@ async function storeHashes(hashes) {
     }
   }
 
-
-  storeHashes(["allen","allenh"]);

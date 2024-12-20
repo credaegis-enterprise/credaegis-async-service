@@ -2,8 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const amqp = require('amqplib');
 
-const sendAccountEmail = require('./workers/sendAccountEmail');
-const sendIssuedCertificates = require('./workers/sendIssuedCertificates');
+const test = require('./blockchain/workers/test')
 
 
 let channel, connection;
@@ -11,15 +10,13 @@ let channel, connection;
 const connectToRabbitMQ = async () => {
     try {
         connection = await amqp.connect(process.env.RABBITMQ_HOST);
-        channel = await connection.createChannel();
+        approvalRequestChannel = await connection.createChannel();
+        approvalResponseChannel = await connection.createChannel();
+        errorChannel = await connection.createChannel();
 
-        console.log("Connected to RabbitMQ");
-
-        await sendAccountEmail(channel);
+        console.log("Connected to RabbitMQ");     
+        await test(approvalRequestChannel,approvalResponseChannel,errorChannel);
   
-
-
-        
     } catch (error) {
         console.error("error starting async services", error);
         console.error(error);
