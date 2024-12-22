@@ -1,15 +1,22 @@
 const dotenv = require('dotenv');
+const express = require('express');
 dotenv.config();
 const amqp = require('amqplib');
+const cors = require('cors');
+
+const app = express();
 
 const test = require('./blockchain/workers/test')
+const port = process.env.PORT
 
 
-let channel, connection;
+
+app.use(express.json());
+app.use(cors());
 
 const connectToRabbitMQ = async () => {
     try {
-        connection = await amqp.connect(process.env.RABBITMQ_HOST);
+        const connection = await amqp.connect(process.env.RABBITMQ_HOST);
         approvalRequestChannel = await connection.createChannel();
         approvalResponseChannel = await connection.createChannel();
         errorChannel = await connection.createChannel();
@@ -24,5 +31,22 @@ const connectToRabbitMQ = async () => {
     }
 
 connectToRabbitMQ();
+app.use(function (err, req, res, next) {
+    res
+      .status(err.status || 500)
+      .send({ message: err.message, stack: err.stack });
+  });
+
+
+  app.post('/help', (req, res) => {
+    console.log(req.body)
+  })
+  
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+}
+)
+
 
 
