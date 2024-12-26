@@ -10,6 +10,9 @@ const test = require('./blockchain/workers/test')
 const port = process.env.PORT
 
 
+const blockchainRoutes = require('./blockchain/routes/blockchain.routes');
+
+
 
 app.use(express.json());
 app.use(cors());
@@ -38,9 +41,8 @@ app.use(function (err, req, res, next) {
   });
 
 
-  app.post('/help', (req, res) => {
-    console.log(req.body)
-  })
+
+app.use('/api/v1/blockchain',blockchainRoutes);
   
 
 app.listen(port, () => {

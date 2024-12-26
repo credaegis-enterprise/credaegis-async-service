@@ -1,5 +1,5 @@
 
-const {storeHashes} = require('./interact')
+const {storeHashes} = require('../utils/interact')
 
 
 const test = async(approvalRequestChannel,approvalResponseChannel,errorChannel)=>{

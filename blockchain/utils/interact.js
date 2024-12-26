@@ -1,5 +1,5 @@
 const {ethers} = require('ethers');
-const contractDetails = require('../contract/artifact.js');
+const contractDetails = require('../contract/artifact');
 require('dotenv').config();
 
 
@@ -9,7 +9,7 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 const privateKey = process.env.PRIVATE_KEY;
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const signer = new ethers.Wallet(privateKey, provider);
-const contract = new ethers.Contract(contractAddress,contractDetails.abi , signer);
+const contract = new ethers.Contract(contractAddress,contractDetails , signer);
 
 
 
@@ -33,3 +33,17 @@ module.exports.storeHashes = async (hashes) => {
     }
   }
 
+
+
+  module.exports.verifyHashes = async (hashes) => {
+
+    const results = await contract.verifyHashesByValue(hashes);
+ 
+    const formattedResults = results.map(result => ({
+        hash: result.verifiedHashes,
+        isVerified: result.verificationResults,
+    }));
+
+    return formattedResults;
+ 
+  }
