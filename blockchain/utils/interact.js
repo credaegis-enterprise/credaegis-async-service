@@ -14,6 +14,40 @@ const contract = new ethers.Contract(contractAddress,contractDetails , signer);
 
 
 
+module.exports.revokeHashes = async (hashes) => {
+  try {
+
+    console.log("hashes",hashes);
+    const tx = await contract.revokeHashes(hashes);
+    const receipt = await tx.wait(); 
+
+
+    const eventInterface = new ethers.utils.Interface(contractDetails);
+    const events = receipt.logs.map(log => {
+      try {
+        return eventInterface.parseLog(log);
+      } catch (err) {
+      
+        return null;
+      }
+    }).filter(log => log && log.name === "HashRevoked"); 
+ 
+
+    const formattedResults = events.map(event => ({
+      hash: event.args.hash,
+      revoked: event.args.rev, 
+    }));
+ 
+
+    console.log("Hashes revoked:", formattedResults); 
+    return formattedResults;
+  } catch (error) {
+    console.error("Error revoking hashes:", error);
+    throw error;
+  }
+}
+
+
 module.exports.storeHashes = async (hashes) => {
     try {
 

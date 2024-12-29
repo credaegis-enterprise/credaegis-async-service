@@ -1,5 +1,5 @@
 
-const {storeHashes} = require('../utils/interact')
+const {storeHashes,revokeHashes} = require('../utils/interact')
 
 
 
@@ -12,7 +12,18 @@ const revocationWorker = async(revocationRequestChannel,revocationResponseChanne
         revocationRequestChannel.consume('REVOKE_REQUEST_QUEUE',async (message) => {
             try{
             const content = JSON.parse(message.content.toString());
-            console.log("content",content);
+            const input = new Array(content.hash);
+            console.log("input",input);
+            const result = await revokeHashes(input);
+            console.log("result",result);
+            const updatedResult = {
+                ...content,
+                hash: result[0].hash,
+                revoked: result[0].revoked
+
+            }
+            console.log("updatedResult",updatedResult);
+            revocationResponseChannel.publish('DIRECT_EXCHANGE','revoke_response',Buffer.from(JSON.stringify(updatedResult)));
             revocationRequestChannel.ack(message);
         }
         catch(error){
