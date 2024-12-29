@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const app = express();
 
-const test = require('./blockchain/workers/test')
+const {approvalWorker,revocationWorker} = require('./blockchain/workers/besuWorkers');
 const port = process.env.PORT
 
 
@@ -22,10 +22,13 @@ const connectToRabbitMQ = async () => {
         const connection = await amqp.connect(process.env.RABBITMQ_HOST);
         approvalRequestChannel = await connection.createChannel();
         approvalResponseChannel = await connection.createChannel();
+        revokeRequestChannel = await connection.createChannel();
+        revokeResponseChannel = await connection.createChannel();
         errorChannel = await connection.createChannel();
 
         console.log("Connected to RabbitMQ");     
-        await test(approvalRequestChannel,approvalResponseChannel,errorChannel);
+        await approvalWorker(approvalRequestChannel,approvalResponseChannel,errorChannel);
+        await revocationWorker(revokeRequestChannel,revokeResponseChannel,errorChannel);
   
     } catch (error) {
         console.error("error starting async services", error);

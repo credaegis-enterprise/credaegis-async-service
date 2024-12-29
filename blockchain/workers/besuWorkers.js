@@ -2,14 +2,43 @@
 const {storeHashes} = require('../utils/interact')
 
 
-const test = async(approvalRequestChannel,approvalResponseChannel,errorChannel)=>{
-    console.log("Listening for test requests");
+
+const revocationWorker = async(revocationRequestChannel,revocationResponseChannel,errorChannel)=>{
+    console.log("Listening for revocation requests");
+    try {
+
+        
+        revocationRequestChannel.prefetch(1);
+        revocationRequestChannel.consume('REVOKE_REQUEST_QUEUE',async (message) => {
+            try{
+            const content = JSON.parse(message.content.toString());
+            console.log("content",content);
+            revocationRequestChannel.ack(message);
+        }
+        catch(error){
+            revocationRequestChannel.nack(message,false,false);
+        }
+    
+
+        },{
+            noAck: false
+        });
+
+    }
+    catch(error){
+        console.error(error);
+    }
+}
+
+
+const approvalWorker = async(approvalRequestChannel,approvalResponseChannel,errorChannel)=>{
+    console.log("Listening for approval requests");
     try {
     
         
         approvalRequestChannel.prefetch(1);
         approvalRequestChannel.consume('APPROVAL_REQUEST_QUEUE',async (message) => {
-            console.log("askjskajsjaksjkajskj")
+
             try{
             const content = JSON.parse(message.content.toString());
             console.log("content",content);
@@ -43,4 +72,4 @@ const test = async(approvalRequestChannel,approvalResponseChannel,errorChannel)=
 }
 
 
-module.exports = test;
+module.exports = {approvalWorker,revocationWorker};
