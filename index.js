@@ -18,6 +18,8 @@ app.use(express.json());
 app.use(cors());
 
 const connectToRabbitMQ = async () => {
+
+    console.log(process.env.RABBITMQ_HOST);
     try {
         const connection = await amqp.connect(process.env.RABBITMQ_HOST);
         approvalRequestChannel = await connection.createChannel();
