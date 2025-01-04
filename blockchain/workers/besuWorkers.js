@@ -56,10 +56,9 @@ const approvalWorker = async(approvalRequestChannel,approvalResponseChannel,erro
             const input = new Array(content.hash);
             const result = await storeHashes(input);
             const updatedResult = {
-                approvalId: content.approvalId,
+                ...content,
                 hash: result[0].Hash,
                 stored: result[0].Stored,
-                userId: content.userId
             }
 
             console.log("updatedResult",updatedResult);
