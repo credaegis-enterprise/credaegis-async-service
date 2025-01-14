@@ -58,21 +58,106 @@ const contractAritfact = [
     "inputs": [
       {
         "internalType": "string",
-        "name": "hash",
+        "name": "merkleroot",
         "type": "string"
       }
     ],
-    "name": "getHashByValue",
+    "name": "finaliseBatch",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllMerkleRoot",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "roots",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct HashStore.allMerkleRoot[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBatchById",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      },
       {
         "internalType": "string",
         "name": "",
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "uint256",
         "name": "",
-        "type": "bytes32"
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getContractDetails",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getHashesForNextBatch",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
       }
     ],
     "stateMutability": "view",
@@ -161,6 +246,16 @@ const contractAritfact = [
             "internalType": "bool",
             "name": "verificationResults",
             "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "merkleRoot",
+            "type": "string"
           }
         ],
         "internalType": "struct HashStore.VerificationResult[]",
@@ -174,5 +269,4 @@ const contractAritfact = [
 ];
 
 
-
-    module.exports = contractAritfact;
+module.exports = contractAritfact;

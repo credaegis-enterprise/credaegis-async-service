@@ -14,6 +14,70 @@ const contract = new ethers.Contract(contractAddress,contractDetails , signer);
 
 
 
+module.exports.fetchHashesToVerify = async () => {
+  const hashes = await contract.getHashesForNextBatch();
+  if (hashes && hashes.length > 0) {
+      const formattedResults = hashes.map(hash => ({
+          hash: hash,
+      }));
+
+      console.log("Fetched hashes for next batch:", formattedResults);
+  } else {
+      console.log("No new hashes found for the next batch.");
+  }
+}
+
+module.exports.fetchContractState = async () => {
+  try {
+      
+      const [batchHashCount, currentBatch, lastHashIndex] = await contract.getContractDetails();
+      const contractState = {
+          batchHashCount: batchHashCount.toString(),
+          currentBatchIndex: currentBatch.toString(),
+      };
+      return contractState;
+  } catch (error) {
+      console.error("Error fetching contract details:", error);
+  }
+}
+
+
+module.exports.fetchAllMerkleRoots = async () => {
+  try {
+    const merkleRoots = await contract.getAllMerkleRoot();
+    const formattedResult = merkleRoots.map((result, index) => ({
+      [`Batch ${index + 1}`]: result.roots,
+    }));
+
+    console.log("Hashes stored successfully:");
+    console.log(formattedResult);
+  } catch (error) {
+    console.error("Error in fetching Merkle roots:", error);
+  }
+}
+
+
+module.exports.fetchBatchInfo = async (batchId) => {
+  try {
+
+      const [hashes, merkleRoot, lastHashIndex] = await contract.getBatchById(batchId);
+
+      const formattedResult = {
+          hashes: hashes,
+          merkleRoot: merkleRoot,
+      };
+
+      return formattedResult;
+      
+  } catch (error) {
+      console.error("Error fetching batch details:", error);
+  }
+}
+
+
+
+
+
 module.exports.revokeHashes = async (hashes) => {
   try {
 
@@ -76,6 +140,7 @@ module.exports.storeHashes = async (hashes) => {
     const formattedResults = results.map(result => ({
         hash: result.verifiedHashes,
         isVerified: result.verificationResults,
+      
     }));
 
     return formattedResults;
