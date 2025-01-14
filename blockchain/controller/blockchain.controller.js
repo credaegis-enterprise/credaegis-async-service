@@ -10,18 +10,14 @@ module.exports.fetchBatchInfo = async(req,res)=>{
 
         
         const batchId = parseInt(req.params.id);
+        console.log(batchId);
         const contractState = await interactFunctions.fetchContractState();
-
-        if(batchId>contractState.currentBatchIndex){
-            res.status(400).send({
-                message: "Batch does not exist, current batch index is "+contractState.currentBatchIndex
-            });
-        }
-        
+        console.log("contractState",contractState);    
         const batchInfo = await interactFunctions.fetchBatchInfo(batchId);
 
-        res.status(200).json({
-            batchInfo: batchInfo
+        return res.status(200).json({
+            hashes: batchInfo.hashes,
+            merkleRoot: batchInfo.merkleRoot
         });
 
     }
@@ -38,7 +34,7 @@ module.exports.fetchHashesToVerify = async(req,res)=>{
  try{
 
     const hashes = await interactFunctions.fetchHashesToVerify();
-    res.status(200).send({
+    res.status(200).json({
         message: "Hashes to verify fetched",
         hashes: hashes
     });
@@ -46,7 +42,7 @@ module.exports.fetchHashesToVerify = async(req,res)=>{
  }
  catch(error){
         console.error("Error fetching hashes to verify:",error);
-        res.status(500).send({
+        res.status(500).json({
             message: "Error fetching hashes to verify",
             error: error
         });
@@ -81,7 +77,8 @@ module.exports.fetchContractState = async(req,res)=>{
         const result =  await interactFunctions.fetchContractState();
         console.log("result",result);
         res.status(200).json({
-            contractState: result
+            currentBatchIndex: result.currentBatchIndex,
+            batchHashCount: result.batchHashCount
         });
 
     }
@@ -105,7 +102,8 @@ module.exports.fetchCurrentBatchInfo = async(req,res)=>{
         const currentBatchInfo = await interactFunctions.fetchBatchInfo(currentBatchIndex);
         console.log("currentBatchInfo",currentBatchInfo);
         res.status(200).json({
-            currentBatchInfo: currentBatchInfo
+            hashes: currentBatchInfo.hashes,
+            merkleRoot: currentBatchInfo.merkleRoot
         });
 
     }
