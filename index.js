@@ -4,6 +4,8 @@ dotenv.config();
 const amqp = require('amqplib');
 const cors = require('cors');
 
+
+//besu integrated version initial (not prod)
 const app = express();
 
 const {approvalWorker,revocationWorker} = require('./blockchain/workers/besuWorkers');
