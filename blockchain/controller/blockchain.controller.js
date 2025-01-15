@@ -8,7 +8,6 @@ module.exports.fetchBatchInfo = async(req,res)=>{
 
     try{
 
-        
         const batchId = parseInt(req.params.id);
         console.log(batchId);
         const contractState = await interactFunctions.fetchContractState();
@@ -30,6 +29,9 @@ module.exports.fetchBatchInfo = async(req,res)=>{
 
     }
 }
+
+
+
 module.exports.fetchHashesToVerify = async(req,res)=>{
  try{
 
@@ -70,6 +72,9 @@ module.exports.fetchAllMerkleRoots = async(req,res)=>{
 }
 
 
+
+
+
 module.exports.fetchContractState = async(req,res)=>{
 
 
@@ -91,6 +96,7 @@ module.exports.fetchContractState = async(req,res)=>{
 
     }
 }
+
 
 
 
@@ -116,6 +122,8 @@ module.exports.fetchCurrentBatchInfo = async(req,res)=>{
 
     }
 }
+
+
 module.exports.verifyHashes = async(req,res)=>{
 
    console.log("req.body",req.body);
