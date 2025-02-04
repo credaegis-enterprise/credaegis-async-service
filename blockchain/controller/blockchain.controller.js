@@ -4,6 +4,32 @@ const interactFunctions = require("../utils/interact");
 
 
 
+
+
+
+
+module.exports.finalizeBatch = async(req,res)=>{
+    try{
+        const merkleRoot = req.params.merkleRoot;
+        const result = await interactFunctions.finalizeBatch(merkleRoot);
+        res.status(200).json(
+            result
+        );
+    }
+    catch(error){
+        console.error("Error finalizing batch:",error);
+        res.status(500).send({
+            message: "Error finalizing batch",
+            error: error
+        });
+
+    }
+}
+
+
+
+
+
 module.exports.fetchBatchInfo = async(req,res)=>{
 
     try{
