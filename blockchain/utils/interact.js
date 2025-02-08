@@ -28,7 +28,7 @@ module.exports.finalizeBatch = async (merkleRoot) => {
     
     return {
       batchId: batchNumber.toString(),
-      status: status.toString(),
+      isFinalized: status
     };
   } catch (error) {
     console.error("Error executing function:", error);
