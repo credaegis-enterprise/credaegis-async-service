@@ -1,8 +1,10 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const authenticator = require('./blockchain/middleware/AuthenticationMiddleware');
 dotenv.config();
 const amqp = require('amqplib');
 const cors = require('cors');
+
 
 const app = express();
 
@@ -47,7 +49,7 @@ app.use(function (err, req, res, next) {
 
 
 
-app.use('/api/v1/blockchain',blockchainRoutes);
+app.use('/api/v1/blockchain',authenticator,blockchainRoutes);
   
 
 app.listen(port, () => {
