@@ -99,6 +99,25 @@ module.exports.fetchAllMerkleRoots = async(req,res)=>{
 
 
 
+module.exports.fetchMerkleRootByHashes = async(req,res)=>{
+    try{
+        const hashes = req.body.hashes;
+        const result = await interactFunctions.getMerkleRootByHashes(hashes);
+        console.log("result",result);
+        return res.status(200).json(result);
+
+    }
+    catch(error){
+        console.error("Error fetching merkle root by hashes:",error);
+        res.status(500).send({
+            message: "Error fetching merkle root by hashes",
+        });
+
+    }
+}
+
+
+
 
 
 module.exports.fetchContractState = async(req,res)=>{

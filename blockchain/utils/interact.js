@@ -9,6 +9,21 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 const signer = new ethers.Wallet(privateKey, provider);
 const contract = new ethers.Contract(contractAddress, contractDetails, signer);
 
+
+
+module.exports.getMerkleRootByHashes = async (hashes) => {
+
+
+    const results = await contract.getMerkleByHash(hashes);
+    const formattedResult =  results.map(result => ({
+      hash: result.hash,
+      merkleRoot: result.merkleRoot
+    }));
+
+    return formattedResult;
+
+}
+
 module.exports.finalizeBatch = async (merkleRoot) => {
   try {
     const tx = await contract.finaliseBatch(merkleRoot);

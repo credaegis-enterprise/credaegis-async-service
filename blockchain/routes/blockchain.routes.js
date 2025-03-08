@@ -1,8 +1,14 @@
 const router = require('express').Router();
-const {verifyHashes,fetchCurrentBatchInfo,fetchContractState,fetchAllMerkleRoots,fetchHashesToVerify,fetchBatchInfo,finalizeBatch} = require("../controller/blockchain.controller");
+const {verifyHashes,
+    fetchMerkleRootByHashes,
+    fetchCurrentBatchInfo,
+    fetchContractState,
+    fetchAllMerkleRoots,fetchHashesToVerify,
+    fetchBatchInfo,finalizeBatch} = require("../controller/blockchain.controller");
 
 
 router.post('/verify',verifyHashes);
+router.get("/hashes/merkle-root",fetchMerkleRootByHashes);
 router.get('/current-batch',fetchCurrentBatchInfo) //info about current batch
 router.get('/contract-state',fetchContractState);
 router.get("/merkle-root/all",fetchAllMerkleRoots);

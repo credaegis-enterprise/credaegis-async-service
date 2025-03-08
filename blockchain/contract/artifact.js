@@ -167,6 +167,37 @@ const contractAritfact = [
     "inputs": [
       {
         "internalType": "string[]",
+        "name": "hashes",
+        "type": "string[]"
+      }
+    ],
+    "name": "getMerkleByHash",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "hash",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "merkleRoot",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct HashStore.HashMerklePair[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string[]",
         "name": "hashesToRevoke",
         "type": "string[]"
       }

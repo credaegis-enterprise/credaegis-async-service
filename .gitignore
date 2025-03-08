@@ -6,6 +6,8 @@ node_modules/*
 
 # Log files
 logs/
+
+.idea
 *.log
 
 # OS-specific files
