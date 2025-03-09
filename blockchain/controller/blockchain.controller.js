@@ -10,7 +10,9 @@ const interactFunctions = require("../utils/interact");
 
 module.exports.finalizeBatch = async(req,res)=>{
     try{
+        console.log("merkleRoot");
         const merkleRoot = req.params.merkleRoot;
+        console.log("merkleRoot",merkleRoot);
         const result = await interactFunctions.finalizeBatch(merkleRoot);
         res.status(200).json(
             result
@@ -110,7 +112,7 @@ module.exports.fetchMerkleRootByHashes = async(req,res)=>{
     catch(error){
         console.error("Error fetching merkle root by hashes:",error);
         res.status(500).send({
-            message: "Error fetching merkle root by hashes",
+            message: error.reason
         });
 
     }

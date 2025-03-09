@@ -162,6 +162,7 @@ module.exports.verifyHashes = async (hashes) => {
   const formattedResults = results.map((result) => ({
     hash: result.verifiedHashes,
     isVerified: result.verificationResults,
+    merkleRoot: result.merkleRoot.length > 0 ? result.merkleRoot : null
   }));
 
   return formattedResults;
