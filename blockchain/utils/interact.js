@@ -140,8 +140,13 @@ module.exports.revokeHashes = async (hashes) => {
 
 module.exports.storeHashes = async (hashes) => {
   try {
+
+    const gasEstimate = await contract.estimateGas.storeHash(hashes);
+    console.log("Estimated gas:", gasEstimate.toString());
     const results = await contract.callStatic.storeHash(hashes);
-    const tx = await contract.storeHash(hashes);
+    const tx = await contract.storeHash(hashes, {
+      gasLimit: gasEstimate.mul(2),
+    });
     await tx.wait();
 
     const formattedResults = results.map((result) => ({

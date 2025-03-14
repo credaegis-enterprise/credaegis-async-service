@@ -10,9 +10,8 @@ const interactFunctions = require("../utils/interact");
 
 module.exports.finalizeBatch = async(req,res)=>{
     try{
-        console.log("merkleRoot");
+
         const merkleRoot = req.params.merkleRoot;
-        console.log("merkleRoot",merkleRoot);
         const result = await interactFunctions.finalizeBatch(merkleRoot);
         res.status(200).json(
             result
@@ -37,9 +36,6 @@ module.exports.fetchBatchInfo = async(req,res)=>{
     try{
 
         const batchId = parseInt(req.params.id);
-        console.log(batchId);
-        const contractState = await interactFunctions.fetchContractState();
-        console.log("contractState",contractState);    
         const batchInfo = await interactFunctions.fetchBatchInfo(batchId);
 
         return res.status(200).json({
@@ -105,7 +101,6 @@ module.exports.fetchMerkleRootByHashes = async(req,res)=>{
     try{
         const hashes = req.body.hashes;
         const result = await interactFunctions.getMerkleRootByHashes(hashes);
-        console.log("result",result);
         return res.status(200).json(result);
 
     }
@@ -127,7 +122,6 @@ module.exports.fetchContractState = async(req,res)=>{
 
     try{
         const result =  await interactFunctions.fetchContractState();
-        console.log("result",result);
         res.status(200).json({
             currentBatchIndex: result.currentBatchIndex,
             batchHashCount: result.batchHashCount
@@ -153,7 +147,6 @@ module.exports.fetchCurrentBatchInfo = async(req,res)=>{
         const contractState = await interactFunctions.fetchContractState();
         const currentBatchIndex = parseInt(contractState.currentBatchIndex);
         const currentBatchInfo = await interactFunctions.fetchBatchInfo(currentBatchIndex);
-        console.log("currentBatchInfo",currentBatchInfo);
         res.status(200).json({
             hashes: currentBatchInfo.hashes,
             merkleRoot: currentBatchInfo.merkleRoot
@@ -178,7 +171,6 @@ module.exports.verifyHashes = async(req,res)=>{
         
 
         const results = await interactFunctions.verifyHashes(req.body);
-        console.log("results",results);
         res.status(200).json(results);
     } catch (error) {
         console.error("Error verifying hashes:", error);
